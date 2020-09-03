@@ -6,7 +6,8 @@ namespace Uppgift_1_1
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Theodor Björkman");
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
+            Console.WriteLine("LMAO");
         }
     }
 }
