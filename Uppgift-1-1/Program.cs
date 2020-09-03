@@ -7,7 +7,7 @@ namespace Uppgift_1_1
         static void Main(string[] args)
         {
             Console.ForegroundColor = ConsoleColor.DarkGreen;
-            Console.WriteLine("LMAO");
+            Console.WriteLine("\"Test\"");
         }
     }
 }
