@@ -9,6 +9,8 @@ namespace projekt1
         static public bool litTorch = false;
         static public bool haveSword = false;
         static public bool swordExist = false;
+        static public bool chestTrap = false;
+        static public bool dog = false;
         static public int location = 0;
         /*
         Location ID list
@@ -29,6 +31,13 @@ namespace projekt1
                 {
                     pVar.swordExist = true;
                 }
+            random = new Random().Next(0, 101);
+                if(random <= 80) 
+                {
+                    pVar.chestTrap = true;
+                }
+
+            Location();
             
         }
         static void Location() //check position
@@ -54,7 +63,7 @@ namespace projekt1
                 int i;
                 for(i = 0; i <= write.Length - 1; i++)
                    {
-                    Thread.Sleep(50);
+                    Thread.Sleep(20);
                  Console.Write(write.Substring(i, 1));
                     }
 
@@ -63,7 +72,7 @@ namespace projekt1
                 int i;
                 for(i = 0; i <= write.Length - 1; i++)
                 {
-                    Thread.Sleep(50);
+                    Thread.Sleep(20);
                     Console.Write(write.Substring(i, 1));
                 }
                     System.Console.WriteLine();
@@ -89,7 +98,7 @@ namespace projekt1
 
             } else if(input == "cave") 
             {
-
+                pVar.first1 = true;
                 Cave();
 
             } else if(input == "torch" && pVar.haveTorch == false) 
@@ -138,7 +147,7 @@ namespace projekt1
 
         static void inOuthouse()
         {
-            if(pVar.haveTorch == true) 
+            if(pVar.haveTorch == true && pVar.litTorch == false) 
                 {
                     Write(false, "Light your torch? ");
                     string boll = Console.ReadLine();
@@ -146,6 +155,7 @@ namespace projekt1
                     if(boll == "yes" || boll == "y")
                     {
                         Write(true, "As you use your flint and steel the sparks start an explosion. You are dead.");
+
                     } else if(boll == "no" || boll == "n")
                     {
                         Write(true, "You walk back out");
@@ -155,7 +165,11 @@ namespace projekt1
                         Write(true, "Invalid choice.");
                         inOuthouse();
                     }
-                } else 
+                } else if(pVar.haveTorch == true && pVar.litTorch == true)
+                {
+                    Write(true, "Opening the door of the outhouse, a pungent smell hits you like a wave before your torch caused the accumulated gasses in the small shed to explode. You died.");
+
+                } else
                 {
                     Write(false, "Perhaps if you had a light source you could make something out. You walk back out. ");
                     Outhouse();
@@ -164,7 +178,128 @@ namespace projekt1
 
         static void Cave() 
         {
-            Write(true, "lmao");
+            string input;
+            if(pVar.first1 == true) 
+            {
+                Write(true, "You entered the cave, it is dark but the light of the moon and stars allow you to see two tunnels seperating from the entrance.");
+                pVar.first1 = false;
+            }
+            
+            if(pVar.haveTorch == true && pVar.litTorch == false)
+            {
+                Write(false, "Do you walk back, forward, left or light your torch? ");
+                input = Console.ReadLine();
+                if(input == "back" || input == "out")
+                {
+                    Write(true, "You walk back out.");
+                    Outside();
+                } else if(input == "forward")
+                {
+                    Write(true, "You walk forward.");
+                    CaveForward();
+                } else if(input == "left")
+                {
+                    CaveLeft();
+                } else if(input == "torch" || input == "light" || input == "light torch")
+                {
+                    Write(true, "The light of your torch reveals a third tunnel hidden in the shadows to your right.");
+                    pVar.litTorch = true;
+                    Cave();
+                } else 
+                {
+                    Write(true, "Invalid choice.");
+                    Cave();
+                }
+            } else if(pVar.haveTorch == true && pVar.litTorch == true)
+            {
+                Write(false, "Do you walk back, forward, left or right? ");
+                input = Console.ReadLine();
+                if(input == "back" || input == "out")
+                {
+                    Write(true, "You step back out.");
+                    Outside();
+                } else if(input == "forward")
+                {
+                    Write(true, "You walk forward.");
+                    CaveForward();
+                } else if(input == "left")
+                {
+                    Write(true, "You took the path to the left.");
+                    CaveLeft();
+                } else if(input == "right")
+                {
+                    Write(true, "You enter the hidden cave.");
+                    CaveHidden();
+                } else 
+                {
+                    Write(true, "Invalid choice.");
+                    Cave();
+                }
+            } else if(pVar.haveTorch == false)
+            {
+                Write(false, "Do you walk back, forward or left? ");
+                input = Console.ReadLine();
+                if(input == "back" || input == "out")
+                {
+                    Write(true, "You step back out.");
+                    Outside();
+                } else if(input == "forward")
+                {
+                    Write(true, "You walk forward.");
+                    CaveForward();
+                } else if(input == "left")
+                {
+                    Write(true, "You took the path to the left.");
+                    CaveLeft();
+                } else 
+                {
+                    Write(true, "Invalid choice.");
+                    Cave();
+                }
+            }
+        }
+        static void CaveLeft()
+        {
+            string input;
+            Write(true, "CaveLeft");
+        }
+        static void CaveHidden()
+        {
+            string input;
+            if(pVar.dog == true) 
+            {
+                Write(true, "You feel a strong sense of dissapointment as you watch the open chest. You turn around and head back.");
+            }
+            Write(true, "You step inside a roomy part of the cave, moonlight shining through a hole in the roof. It is a dead end with a suspicious chest laying in front of the cave wall.");
+            Write(false, "Will you open the chest or go back out? ");
+            input = Console.ReadLine();
+            if(input == "open" || input == "open chest" || input == "chest")
+            {
+                if(pVar.chestTrap == true)
+                {
+                    Write(true, "As you open the chest you hear a small twang and feel a prick in your stomach before everything starts to fade. You died.");
+
+                } else
+                {
+                    Write(true, "You open the chest finding an artifact of immense power.");
+                    Thread.Sleep(1000);
+                    Write(true, "A small white dog jumps into the chest from behind you and absorbs the artifact. \nThe dog phases through the floor leaving only some white dust behind.");
+                    Thread.Sleep(2000);
+                    Write(true, "You walk back to the cave entrance.");
+                    Thread.Sleep(1000);
+                    pVar.dog = true;
+                    Cave();
+                }
+            } else if(input == "back" || input == "out")
+            {
+                Write(true, "You turn around and head back.");
+                Cave();
+            }
+        }
+        static void CaveForward()
+        {
+            string input;
+            Write(true, "CaveForward");
         }
     }
 }
