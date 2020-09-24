@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading;
-
+//highlight answers
 namespace projekt1
 {
     static class pVar 
@@ -352,7 +352,7 @@ namespace projekt1
                 CaveLeft2();
             }
             string input;
-            Write(false, "Attack, block or use potion ");
+            Write(false, "Attack, block or use potion? ");
             input = Console.ReadLine();
             input = input.ToLower();
             if(input == "attack")
@@ -461,7 +461,7 @@ namespace projekt1
         {
             Write(true, "As you near the end of the cave, you can finally see the treasure that made you come all this way."); 
             Thread.Sleep(100);
-            Write(true, "As you take a bite out of the savory chockolate cake you find that it tastes like cardboard.");
+            Write(true, "As you take a bite out of the savory chocolate cake you find that it tastes like cardboard.");
             Thread.Sleep(100);
             Write(true, "In fact as you take a closer look you notice that it IS cardboard.");
             Thread.Sleep(100);
