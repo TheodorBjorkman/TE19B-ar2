@@ -22,9 +22,17 @@ namespace projekt1
     }
     class Program
     {
-        static void Main()
+        static void Main() //initialization
         {  
-            Init();
+            int random = new Random().Next(0, 101);
+                if(random >= 20) 
+                {
+                    pVar.swordExist = true;
+                }
+            
+        }
+        static void Location() //check position
+        {
             switch (pVar.location) 
             {
                 case 0:
@@ -38,15 +46,7 @@ namespace projekt1
                     break;
             }
         }
-        static void Init()
-        {
-            int random = new Random().Next(0, 101);
-                if(random >= 20) 
-                {
-                    pVar.swordExist = true;
-                }
-        }
-        static void Write(bool line, string write) 
+        static void Write(bool line, string write) //cool writing system
         {
 
             if(line == false) 
