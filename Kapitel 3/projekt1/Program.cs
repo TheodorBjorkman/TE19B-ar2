@@ -346,6 +346,7 @@ namespace projekt1
         }
         static void Fight()
         {
+            pVar.location = 3;
             if(pVar.hpWolf <= 0)
             {
                 CaveLeft2();
@@ -395,10 +396,17 @@ namespace projekt1
                 }
             }else if(input == "potion")
             {
-                Write(true, "You drink the red potion");
-                int healing = new Random().Next(0, 6);
-                pVar.hp = pVar.hp + healing + 2;
-                hpCheck();
+                if(pVar.potion == true)
+                {
+                    Write(true, "You drink the red potion");
+                    int healing = new Random().Next(0, 6);
+                    pVar.hp = pVar.hp + healing + 2;
+                    hpCheck();
+                } else 
+                {
+                    Write(true, "You don't have a potion.");
+                    hpCheck();
+                }
             }
         }
         static void hpCheck()
