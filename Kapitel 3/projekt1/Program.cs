@@ -468,6 +468,7 @@ namespace projekt1
             Write(true, "All of this, just to find out that the cake is a lie.");
             Thread.Sleep(100);
             Write(true, "You start the treck back home, thinking to yourself \"This party was awesome, I hope the birthday cake atleast isn't cardboard. I have to thank my friends for making this for me\".");
+            System.Environment.Exit(0);
         }
     }
 }
