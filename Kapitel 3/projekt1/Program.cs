@@ -11,6 +11,8 @@ namespace projekt1
         static public bool swordExist = false;
         static public bool chestTrap = false;
         static public bool dog = false;
+        static public bool potion = false;
+        static public int hpWolf = 9;
         static public int location = 0;
         /*
         Location ID list
@@ -21,6 +23,10 @@ namespace projekt1
         static public bool first0 = true;
         static public bool first1 = true;
         static public bool first2 = true;
+        static public bool first3 = true;
+
+        static public int hp = 12;
+        static public int atk = 0;
     }
     class Program
     {
@@ -52,6 +58,9 @@ namespace projekt1
                     break;
                 case 2:
                     Cave();
+                    break;
+                case 3:
+                    Fight();
                     break;
             }
         }
@@ -128,6 +137,7 @@ namespace projekt1
                 if(pVar.swordExist == true) 
                 {
                     Write(true, "You found a rusty sword! You swapped your sturdy stick for it.");
+                    pVar.atk = 2;
                     Outhouse();
                 } else 
                 {
@@ -189,6 +199,7 @@ namespace projekt1
             {
                 Write(false, "Do you walk back, forward, left or light your torch? ");
                 input = Console.ReadLine();
+                input = input.ToLower();
                 if(input == "back" || input == "out")
                 {
                     Write(true, "You walk back out.");
@@ -214,6 +225,7 @@ namespace projekt1
             {
                 Write(false, "Do you walk back, forward, left or right? ");
                 input = Console.ReadLine();
+                input = input.ToLower();
                 if(input == "back" || input == "out")
                 {
                     Write(true, "You step back out.");
@@ -239,6 +251,7 @@ namespace projekt1
             {
                 Write(false, "Do you walk back, forward or left? ");
                 input = Console.ReadLine();
+                input = input.ToLower();
                 if(input == "back" || input == "out")
                 {
                     Write(true, "You step back out.");
@@ -260,8 +273,30 @@ namespace projekt1
         }
         static void CaveLeft()
         {
+            if(pVar.hpWolf <= 0)
+            {
+                CaveLeft2();
+            }
             string input;
-            Write(true, "CaveLeft");
+            Write(false, "As you walked into a larger section of the tunnel, large enough to call a room, you hear a growl infront as you see a wolf prowl from the tunnel ahead. You hold up your weapon. Do you fight or flee? ");
+            input = Console.ReadLine();
+            input = input.ToLower();
+            if(input == "flee" || input == "escape")
+            {
+                int random = new Random().Next(0, 101);
+                if(random <= 50) 
+                {
+                    Write(true, "The wolf chased you down and felled you as you were running. You died.");
+                } else
+                {
+                    Write(true, "The wolf stayed as you walked backwards to the cave entrance.");
+                    Cave();
+                }
+            } else if(input == "fight")
+            {
+                Write(true, "You and the wolf press forward in sync, circling one another in the room.");
+                Fight();
+            }
         }
         static void CaveHidden()
         {
@@ -273,6 +308,7 @@ namespace projekt1
             Write(true, "You step inside a roomy part of the cave, moonlight shining through a hole in the roof. It is a dead end with a suspicious chest laying in front of the cave wall.");
             Write(false, "Will you open the chest or go back out? ");
             input = Console.ReadLine();
+            input = input.ToLower();
             if(input == "open" || input == "open chest" || input == "chest")
             {
                 if(pVar.chestTrap == true)
@@ -298,8 +334,132 @@ namespace projekt1
         }
         static void CaveForward()
         {
+            if(pVar.first3 == true)
+            {
+            Write(true, "You walk forward finding a glass flask with a bright red liquid giving off some red light. You pick it up and head back.");
+            pVar.potion = true;
+            } else
+            {
+                Write(true, "There is nothing else here, only a dead end. You head back.");
+            }
+            Cave();
+        }
+        static void Fight()
+        {
+            if(pVar.hpWolf <= 0)
+            {
+                CaveLeft2();
+            }
             string input;
-            Write(true, "CaveForward");
+            Write(false, "Attack, block or use potion ");
+            input = Console.ReadLine();
+            input = input.ToLower();
+            if(input == "attack")
+            {
+                Write(true, "You slash at the wolf with your weapon hitting it but getting slashed by claws in return");
+                int random = new Random().Next(0, 4);
+                Thread.Sleep(3);
+                int random2 = new Random().Next(1, 3);
+                pVar.hp = pVar.hp - (random + 3);
+                pVar.hpWolf = pVar.hpWolf - (random2 - pVar.atk);
+                hpCheck();
+
+            }else if(input == "block")
+            {
+                
+                int damage;
+                int success = new Random().Next(0, 3);
+                if(success <= 2)
+                {
+                    if(pVar.litTorch == true)
+                    {
+                        Write(true, "You block the wolfs bite with your torch burning its face while getting slightly burnt yourself.");
+                        damage = new Random().Next(0, 1);
+                        int damage2 = new Random().Next(0, 3);
+                        pVar.hp = pVar.hp - (damage + 1);
+                        pVar.hpWolf = pVar.hpWolf - (damage2 + 3);
+                        hpCheck();
+                    } else if(pVar.litTorch == false)
+                    {
+                        Write(true, "You block the wolfs bite attack, throwing it to the side dealing slight amounts of damage.");
+                        damage = new Random().Next(0, 2);
+                        pVar.hpWolf = pVar.hpWolf - (damage + 2);
+                        hpCheck();
+                    }
+                } else
+                {
+                    Write(true, "You fail to block the wolfs attack taking massive damage.");
+                    damage = new Random().Next(0, 2);
+                    pVar.hp = pVar.hp - (damage + 7);
+                    hpCheck();
+                }
+            }else if(input == "potion")
+            {
+                Write(true, "You drink the red potion");
+                int healing = new Random().Next(0, 6);
+                pVar.hp = pVar.hp + healing + 2;
+                hpCheck();
+            }
+        }
+        static void hpCheck()
+        {
+            if(pVar.hp >= 12)
+            {
+                Write(true, "You are undamaged");
+                Location();
+            } else if(pVar.hp >= 10)
+            {
+                Write(true, "You are slightly hurt");
+                Location();
+            } else if(pVar.hp >= 6) 
+            {
+                Write(true, "You are hurt");
+                Location();
+            } else if(pVar.hp >= 4)
+            {
+                Write(true, "You are dying");
+                Location();
+            } else if(pVar.hp >=1)
+            {
+                Write(true, "You are almost dead");
+                Location();
+            }
+            else
+            {
+                Write(true, "You died.");
+            }
+        }
+        static void CaveLeft2()
+        {
+            string input;
+            Write(false, "There lies a dead wolf in this room, go forward or back? ");
+            input = Console.ReadLine();
+            input = input.ToLower();
+            if(input == "forward")
+            {
+                Write(true, "You walk to the next part of the cave.");
+                CaveEnd();
+            } else if(input == "back")
+            {
+                Write(true, "You go back");
+                Cave();
+            } else
+            {
+                Write(true, "Invalid choice.");
+                CaveLeft2();
+            }
+        }
+        static void CaveEnd()
+        {
+            Write(true, "As you near the end of the cave, you can finally see the treasure that made you come all this way."); 
+            Thread.Sleep(100);
+            Write(true, "As you take a bite out of the savory chockolate cake you find that it tastes like cardboard.");
+            Thread.Sleep(100);
+            Write(true, "In fact as you take a closer look you notice that it IS cardboard.");
+            Thread.Sleep(100);
+            Write(true, "All of this, just to find out that the cake is a lie.");
+            Thread.Sleep(100);
+            Write(true, "You start the treck back home, thinking to yourself \"This party was awesome, I hope the birthday cake atleast isn't cardboard. I have to thank my friends for making this for me\".");
         }
     }
 }
