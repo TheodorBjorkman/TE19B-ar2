@@ -2,7 +2,8 @@
 
 namespace projekt1
 {
-    static class pVar {
+    static class pVar 
+    {
         static public bool haveTorch = false;
         static public bool haveSword = false;
         static public bool swordExist = false;
@@ -21,13 +22,23 @@ namespace projekt1
     {
         static void Main(string[] args)
         {
-            if(pVar.location == 0) {
-                Outside();
-            } else if 
+            switch (pVar.location) 
+            {
+                case 0:
+                    Outside();
+                    break;
+                case 1:
+                    Outhouse();
+                    break;
+                case 2:
+                    Cave();
+                    break;
+            }
 
 
         }
-        static void Write(bool line, string write) {
+        static void Write(bool line, string write) 
+        {
 
             if(line == false) {
 
@@ -39,8 +50,10 @@ namespace projekt1
 
             }
         }
-        static void Outside() {
-            if(pVar.first0 == true){
+        static void Outside() 
+        {
+            if(pVar.first0 == true)
+            {
                 Write(false, "You are standing in front of a cave entrance located at the foot of a mountain. There is an outhouse a few meters to the left of the entrance and a torch leaned on the right of the opening. Where do you go? ");
                 pVar.first0 = false;
             } else {
@@ -50,15 +63,18 @@ namespace projekt1
 
             input = input.ToLower();
 
-            if(input == "outhouse") {
+            if(input == "outhouse") 
+            {
 
                 Outhouse();
 
-            } else if(input == "cave") {
+            } else if(input == "cave") 
+            {
 
                 Write(true, "Cave");
 
-            } else if(input == "torch" && pVar.haveTorch == false) {
+            } else if(input == "torch" && pVar.haveTorch == false) 
+            {
 
                 pVar.haveTorch = true;
                 Write(false, "You picked up the torch and walked back.");
@@ -70,18 +86,22 @@ namespace projekt1
                 Outside();
             }
         }
-        static void Outhouse() {
-            if(pVar.first1 == true) {
+        static void Outhouse() 
+        {
+            if(pVar.first1 == true) 
+            {
                 var rand = new Random();
                 int random = rand.Next(101);
-                if(random >= 20) {
+                if(random >= 20) 
+                {
                     pVar.swordExist = true;
                 }
             }
             Write(true, "You now stand next to the outhouse");
         }
 
-        static void Cave() {
+        static void Cave() 
+        {
             
         }
     }
