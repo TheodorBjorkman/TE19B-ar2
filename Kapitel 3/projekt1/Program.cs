@@ -5,6 +5,7 @@ namespace projekt1
     static class pVar 
     {
         static public bool haveTorch = false;
+        static public bool litTorch = false;
         static public bool haveSword = false;
         static public bool swordExist = false;
         static public int location = 0;
@@ -60,7 +61,6 @@ namespace projekt1
                 Write(false, "You are outside the cave. Where do you go? ");
             }
             string input = Console.ReadLine();
-
             input = input.ToLower();
 
             if(input == "outhouse") 
@@ -97,7 +97,41 @@ namespace projekt1
                     pVar.swordExist = true;
                 }
             }
-            Write(true, "You now stand next to the outhouse");
+            Write(false, "You stand next to the outhouse. Do you go look around, go inside or go back? ");
+            string input = Console.ReadLine();
+            input = input.ToLower();
+            if(input == "look around" || input == "look" || input == "around") 
+            {
+                if(pVar.swordExist == true) 
+                {
+                    Write(true, "You found a rusty sword! You swapped your sturdy stick for it.");
+                    Outhouse();
+                } else 
+                {
+                    Write(true, "There was nothing there.");
+                    Outhouse();
+                }
+            } else if(input == "inside" || input == "go inside")
+            {
+                if(pVar.haveTorch == true) 
+                {
+                    Write(true, "You stepped inside. It smells atrocius and is too dark to see anything. Light your torch? ");
+                    string boll = Console.ReadLine();
+                    boll = boll.ToLower();
+                    if(boll == "yes" || boll == "y")
+                    {
+                        Write(true, "As you use your flint and steel the sparks start an explosion. You are dead.");
+                    } else if(boll == "no" || boll == "n")
+                    {
+                        Write(true, "You walk back out");
+                        Outhouse();
+                    }
+                } else 
+                {
+                    Write(true, "You stepped inside. It smells atrocius and is too dark to see anything. Perhaps if you had a light source you could make something out. You walk back out.");
+                    Outhouse();
+                }
+            }
         }
 
         static void Cave() 
