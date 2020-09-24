@@ -21,8 +21,14 @@ namespace projekt1
     }
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
+            
+                int random = new Random().Next(0, 101);
+                if(random >= 20) 
+                {
+                    pVar.swordExist = true;
+                }
             switch (pVar.location) 
             {
                 case 0:
@@ -71,18 +77,18 @@ namespace projekt1
             } else if(input == "cave") 
             {
 
-                Write(true, "Cave");
+                Cave();
 
             } else if(input == "torch" && pVar.haveTorch == false) 
             {
 
                 pVar.haveTorch = true;
-                Write(false, "You picked up the torch and walked back.");
+                Write(true, "You picked up the torch and walked back.");
                 Outside();
 
             } else {
 
-                Write(false, "That is not a valid choice.");
+                Write(true, "That is not a valid choice.");
                 Outside();
             }
         }
@@ -90,12 +96,7 @@ namespace projekt1
         {
             if(pVar.first1 == true) 
             {
-                var rand = new Random();
-                int random = rand.Next(101);
-                if(random >= 20) 
-                {
-                    pVar.swordExist = true;
-                }
+                
             }
             Write(false, "You stand next to the outhouse. Do you go look around, go inside or go back? ");
             string input = Console.ReadLine();
@@ -113,9 +114,20 @@ namespace projekt1
                 }
             } else if(input == "inside" || input == "go inside")
             {
-                if(pVar.haveTorch == true) 
+                Write(false, "You stepped inside. It smells atrocius and is too dark to see anything. ");
+                inOuthouse(); 
+            } else if(input == "back" || input == "go back")
+            {
+                Write(true, "You go back.");
+                Outside();
+            }
+        }
+
+        static void inOuthouse()
+        {
+            if(pVar.haveTorch == true) 
                 {
-                    Write(true, "You stepped inside. It smells atrocius and is too dark to see anything. Light your torch? ");
+                    Write(false, "Light your torch? ");
                     string boll = Console.ReadLine();
                     boll = boll.ToLower();
                     if(boll == "yes" || boll == "y")
@@ -125,18 +137,21 @@ namespace projekt1
                     {
                         Write(true, "You walk back out");
                         Outhouse();
+                    } else
+                    {
+                        Write(true, "Invalid choice.");
+                        inOuthouse();
                     }
                 } else 
                 {
-                    Write(true, "You stepped inside. It smells atrocius and is too dark to see anything. Perhaps if you had a light source you could make something out. You walk back out.");
+                    Write(false, "Perhaps if you had a light source you could make something out. You walk back out. ");
                     Outhouse();
                 }
-            }
         }
 
         static void Cave() 
         {
-            
+            Write(true, "lmao");
         }
     }
 }
