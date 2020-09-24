@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 
 namespace projekt1
 {
@@ -22,13 +23,8 @@ namespace projekt1
     class Program
     {
         static void Main()
-        {
-            
-                int random = new Random().Next(0, 101);
-                if(random >= 20) 
-                {
-                    pVar.swordExist = true;
-                }
+        {  
+            Init();
             switch (pVar.location) 
             {
                 case 0:
@@ -41,19 +37,36 @@ namespace projekt1
                     Cave();
                     break;
             }
-
-
+        }
+        static void Init()
+        {
+            int random = new Random().Next(0, 101);
+                if(random >= 20) 
+                {
+                    pVar.swordExist = true;
+                }
         }
         static void Write(bool line, string write) 
         {
 
-            if(line == false) {
+            if(line == false) 
+                {
+                int i;
+                for(i = 0; i <= write.Length - 1; i++)
+                   {
+                    Thread.Sleep(50);
+                 Console.Write(write.Substring(i, 1));
+                    }
 
-                Console.Write(write);
-
-            } else {
-
-                System.Console.WriteLine(write);
+            } else 
+            {
+                int i;
+                for(i = 0; i <= write.Length - 1; i++)
+                {
+                    Thread.Sleep(50);
+                    Console.Write(write.Substring(i, 1));
+                }
+                    System.Console.WriteLine();
 
             }
         }

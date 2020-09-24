@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 
 namespace test
 {
@@ -6,16 +7,14 @@ namespace test
     {
         static void Main(string[] args)
         {
-             
-
-
-                int test = new Random().Next(0, 101);
-                Console.WriteLine(test);
-
-             /*
-             int random = rand.Next(101);
-             System.Console.WriteLine(rand);
-             */
+            int i;
+            System.Console.Write("Write something: ");
+            string test = Console.ReadLine();
+            for(i = 0; i <= test.Length - 1; i++)
+            {
+                Thread.Sleep(50);
+                Console.Write(test.Substring(i, 1));
+            }
         }
     }
 }
