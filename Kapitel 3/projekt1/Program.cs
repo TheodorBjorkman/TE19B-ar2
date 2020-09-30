@@ -101,68 +101,63 @@ namespace projekt1
             {
                 Write(false, "You are outside the cave. Where do you go? ");
             }
-            string input = Console.ReadLine();
-            input = input.ToLower();
-
-            if (input == "outhouse")
+            TBA.Selector selector = new TBA.Selector();
+            selector.Add("Outhouse");
+            selector.Add("Cave");
+            if (pVar.haveTorch == false) selector.Add("Torch");
+            int output = selector.Run();
+            selector.Clear();
+            System.Console.WriteLine();
+            switch (output)
             {
-
-                Outhouse();
-
-            }
-            else if (input == "cave")
-            {
-                pVar.first1 = true;
-                Cave();
-
-            }
-            else if (input == "torch" && pVar.haveTorch == false)
-            {
-
-                pVar.haveTorch = true;
-                Write(true, "You picked up the torch and walked back.");
-                Outside();
-
-            }
-            else
-            {
-
-                Write(true, "That is not a valid choice.");
-                Outside();
+                case 0:
+                    Outhouse();
+                    break;
+                case 1:
+                    pVar.first1 = true;
+                    Cave();
+                    break;
+                case 2:
+                    pVar.haveTorch = true;
+                    Write(true, "You picked up the torch and walked back.");
+                    Outside();
+                    break;
             }
         }
         static void Outhouse()
         {
-            if (pVar.first1 == true)
-            {
 
-            }
             Write(false, "You stand next to the outhouse. Do you go look around, go inside or go back? ");
-            string input = Console.ReadLine();
-            input = input.ToLower();
-            if (input == "look around" || input == "look" || input == "around")
+            TBA.Selector selector = new TBA.Selector();
+            selector.Add("test");
+            selector.Add("test");
+            selector.Add("test2");
+            int output = selector.Run();
+            selector.Clear();
+            switch (output)
             {
-                if (pVar.swordExist == true)
-                {
-                    Write(true, "You found a rusty sword! You swapped your sturdy stick for it.");
-                    pVar.atk = 2;
-                    Outhouse();
-                }
-                else
-                {
-                    Write(true, "There was nothing there.");
-                    Outhouse();
-                }
-            }
-            else if (input == "inside" || input == "go inside")
-            {
-                Write(false, "You stepped inside. It smells atrocius and is too dark to see anything. ");
-                inOuthouse();
-            }
-            else if (input == "back" || input == "go back")
-            {
-                Write(true, "You go back.");
-                Outside();
+                case 0:
+                    if (pVar.swordExist == true)
+                    {
+                        Write(true, "You found a rusty sword! You swapped your sturdy stick for it.");
+                        pVar.atk = 2;
+                        Outhouse();
+                    }
+                    else
+                    {
+                        Write(true, "There was nothing there.");
+                        Outhouse();
+                    }
+                    break;
+                case 1:
+                    Write(false, "You stepped inside. It smells atrocius and is too dark to see anything. ");
+                    inOuthouse();
+                    break;
+
+                case 2:
+                    Write(true, "You go back.");
+                    Outside();
+                    break;
             }
         }
 
@@ -171,28 +166,28 @@ namespace projekt1
             if (pVar.haveTorch == true && pVar.litTorch == false)
             {
                 Write(false, "Light your torch? ");
-                string boll = Console.ReadLine();
-                boll = boll.ToLower();
-                if (boll == "yes" || boll == "y")
+                TBA.Selector selector = new TBA.Selector();
+                selector.Add("Yes");
+                selector.Add("No");
+                int output = selector.Run();
+                selector.Clear();
+                System.Console.WriteLine();
+                switch (output)
                 {
-                    Write(true, "As you use your flint and steel the sparks start an explosion. You are dead.");
-
-                }
-                else if (boll == "no" || boll == "n")
-                {
-                    Write(true, "You walk back out");
-                    Outhouse();
-                }
-                else
-                {
-                    Write(true, "Invalid choice.");
-                    inOuthouse();
+                    case 0:
+                        Write(true, "As you use your flint and steel the sparks start an explosion. You are dead.");
+                        System.Environment.Exit(0);
+                        break;
+                    case 1:
+                        Write(true, "You walk back out");
+                        Outhouse();
+                        break;
                 }
             }
             else if (pVar.haveTorch == true && pVar.litTorch == true)
             {
                 Write(true, "Opening the door of the outhouse, a pungent smell hits you like a wave before your torch caused the accumulated gasses in the small shed to explode. You died.");
-
+                System.Environment.Exit(0);
             }
             else
             {
@@ -209,94 +204,49 @@ namespace projekt1
                 Write(true, "You entered the cave, it is dark but the light of the moon and stars allow you to see two tunnels seperating from the entrance.");
                 pVar.first1 = false;
             }
-
+            TBA.Selector selector = new TBA.Selector();
+            selector.Add("Forward");
+            selector.Add("Left");
+            selector.Add("Back");
             if (pVar.haveTorch == true && pVar.litTorch == false)
             {
-                Write(false, "Do you walk back, forward, left or light your torch? ");
-                input = Console.ReadLine();
-                input = input.ToLower();
-                if (input == "back" || input == "out")
-                {
+                selector.Add("Light torch");
+                Write(false, "Do you walk back, forward, left or light your torch?");
+            }
+            if (pVar.litTorch == true)
+            {
+                selector.Add("Right");
+                Write(false, "Do you walk back, forward, left or right?");
+            }
+            int output = selector.Run();
+            selector.Clear();
+            System.Console.WriteLine();
+            switch (output)
+            {
+                case 0:
+                    Write(true, "You walk forward.");
+                    CaveForward();
+                    break;
+                case 1:
+                    CaveLeft();
+                    break;
+                case 2:
                     Write(true, "You walk back out.");
                     Outside();
-                }
-                else if (input == "forward")
-                {
-                    Write(true, "You walk forward.");
-                    CaveForward();
-                }
-                else if (input == "left")
-                {
-                    CaveLeft();
-                }
-                else if (input == "torch" || input == "light" || input == "light torch")
-                {
-                    Write(true, "The light of your torch reveals a third tunnel hidden in the shadows to your right.");
-                    pVar.litTorch = true;
-                    Cave();
-                }
-                else
-                {
-                    Write(true, "Invalid choice.");
-                    Cave();
-                }
-            }
-            else if (pVar.haveTorch == true && pVar.litTorch == true)
-            {
-                Write(false, "Do you walk back, forward, left or right? ");
-                input = Console.ReadLine();
-                input = input.ToLower();
-                if (input == "back" || input == "out")
-                {
-                    Write(true, "You step back out.");
-                    Outside();
-                }
-                else if (input == "forward")
-                {
-                    Write(true, "You walk forward.");
-                    CaveForward();
-                }
-                else if (input == "left")
-                {
-                    Write(true, "You took the path to the left.");
-                    CaveLeft();
-                }
-                else if (input == "right")
-                {
-                    Write(true, "You enter the hidden cave.");
-                    CaveHidden();
-                }
-                else
-                {
-                    Write(true, "Invalid choice.");
-                    Cave();
-                }
-            }
-            else if (pVar.haveTorch == false)
-            {
-                Write(false, "Do you walk back, forward or left? ");
-                input = Console.ReadLine();
-                input = input.ToLower();
-                if (input == "back" || input == "out")
-                {
-                    Write(true, "You step back out.");
-                    Outside();
-                }
-                else if (input == "forward")
-                {
-                    Write(true, "You walk forward.");
-                    CaveForward();
-                }
-                else if (input == "left")
-                {
-                    Write(true, "You took the path to the left.");
-                    CaveLeft();
-                }
-                else
-                {
-                    Write(true, "Invalid choice.");
-                    Cave();
-                }
+                    break;
+                case 3:
+                    if (pVar.litTorch == false)
+                    {
+                        Write(true, "The light of your torch reveals a third tunnel hidden in the shadows to your right.");
+                        pVar.litTorch = true;
+                        Cave();
+                    }
+                    else
+                    {
+                        Write(true, "You enter the hidden cave.");
+                        CaveHidden();
+                    }
+                    break;
             }
         }
         static void CaveLeft()
