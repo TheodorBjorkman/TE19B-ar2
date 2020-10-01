@@ -129,11 +129,12 @@ namespace projekt1
 
             Write(false, "You stand next to the outhouse. Do you go look around, go inside or go back? ");
             TBA.Selector selector = new TBA.Selector();
-            selector.Add("test");
-            selector.Add("test");
-            selector.Add("test2");
+            selector.Add("Look around");
+            selector.Add("Inside");
+            selector.Add("Back");
             int output = selector.Run();
             selector.Clear();
+            System.Console.WriteLine();
             switch (output)
             {
                 case 0:
@@ -198,7 +199,6 @@ namespace projekt1
 
         static void Cave()
         {
-            string input;
             if (pVar.first1 == true)
             {
                 Write(true, "You entered the cave, it is dark but the light of the moon and stars allow you to see two tunnels seperating from the entrance.");
@@ -255,13 +255,21 @@ namespace projekt1
             {
                 CaveLeft2();
             }
-            string input;
             Write(false, "As you walked into a larger section of the tunnel, large enough to call a room, you hear a growl infront as you see a wolf prowl from the tunnel ahead. You hold up your weapon. Do you fight or flee? ");
-            input = Console.ReadLine();
-            input = input.ToLower();
-            if (input == "flee" || input == "escape")
+            TBA.Selector selector = new TBA.Selector();
+            selector.Add("Fight");
+            selector.Add("Flee");
+            int output = selector.Run();
+            selector.Clear();
+            System.Console.WriteLine();
+            switch(output)
             {
-                int random = new Random().Next(0, 101);
+            case 0:
+                Write(true, "You and the wolf press forward in sync, circling one another in the room.");
+                Fight();
+            break;
+            case 1:
+            int random = new Random().Next(0, 101);
                 if (random <= 50)
                 {
                     Write(true, "The wolf chased you down and felled you as you were running. You died.");
@@ -271,16 +279,11 @@ namespace projekt1
                     Write(true, "The wolf stayed as you walked backwards to the cave entrance.");
                     Cave();
                 }
-            }
-            else if (input == "fight")
-            {
-                Write(true, "You and the wolf press forward in sync, circling one another in the room.");
-                Fight();
+            break;
             }
         }
         static void CaveHidden()
         {
-            string input;
             switch (pVar.dog)
             {
                 case true:
@@ -290,11 +293,16 @@ namespace projekt1
                 case false:
                     Write(true, "You step inside a roomy part of the cave, moonlight shining through a hole in the roof. It is a dead end with a suspicious chest laying in front of the cave wall.");
                     Write(false, "Will you open the chest or go back out? ");
-                    input = Console.ReadLine();
-                    input = input.ToLower();
-                    if (input == "open" || input == "open chest" || input == "chest")
+                    TBA.Selector selector = new TBA.Selector();
+                    selector.Add("Open");
+                    selector.Add("Leave");
+                    int output = selector.Run();
+                    selector.Clear();
+                    System.Console.WriteLine();
+                    switch(output)
                     {
-                        if (pVar.chestTrap == true)
+                    case 0:
+                    if (pVar.chestTrap == true)
                         {
                             Write(true, "As you open the chest you hear a small twang and feel a prick in your stomach before everything starts to fade. You died.");
 
@@ -310,11 +318,11 @@ namespace projekt1
                             pVar.dog = true;
                             Cave();
                         }
-                    }
-                    else if (input == "back" || input == "out")
-                    {
-                        Write(true, "You turn around and head back.");
-                        Cave();
+                    break;
+                    case 1:
+                    Write(true, "You turn around and head back.");
+                    Cave();
+                    break;
                     }
                     break;
             }
@@ -339,57 +347,58 @@ namespace projekt1
             {
                 CaveLeft2();
             }
-            string input;
             Write(false, "Attack, block or use potion? ");
-            input = Console.ReadLine();
-            input = input.ToLower();
-            switch (input)
+            TBA.Selector selector = new TBA.Selector();
+            selector.Add("Attack");
+            selector.Add("Block");
+            selector.Add("Potion");
+            int output = selector.Run();
+            selector.Clear();
+            System.Console.WriteLine();
+            switch(output)
             {
-                case "attack":
-                    Write(true, "You slash at the wolf with your weapon hitting it but getting slashed by claws in return");
-                    int random = new Random().Next(0, 4);
-                    Thread.Sleep(3);
-                    int random2 = new Random().Next(1, 3);
-                    pVar.hp = pVar.hp - (random + 3);
-                    pVar.hpWolf = pVar.hpWolf - (random2 - pVar.atk);
-                    hpCheck();
-                    break;
-
-                case "block":
-
-
-                    int damage;
-                    int success = new Random().Next(0, 3);
-                    if (success <= 2)
+            case 0:
+                Write(true, "You slash at the wolf with your weapon hitting it but getting slashed by claws in return");
+                int random = new Random().Next(0, 4);
+                Thread.Sleep(3);
+                int random2 = new Random().Next(1, 3);
+                pVar.hp = pVar.hp - (random + 3);
+                pVar.hpWolf = pVar.hpWolf - (random2 - pVar.atk);
+                hpCheck();
+                break;
+            case 1:
+                int damage;
+                int success = new Random().Next(0, 3);
+                if (success <= 2)
+                {
+                    if (pVar.litTorch == true)
                     {
-                        if (pVar.litTorch == true)
-                        {
-                            Write(true, "You block the wolfs bite with your torch burning its face while getting slightly burnt yourself.");
-                            damage = new Random().Next(0, 1);
-                            int damage2 = new Random().Next(0, 3);
-                            pVar.hp = pVar.hp - (damage + 1);
-                            pVar.hpWolf = pVar.hpWolf - (damage2 + 3);
-                            hpCheck();
-                        }
-                        else if (pVar.litTorch == false)
-                        {
-                            Write(true, "You block the wolfs bite attack, throwing it to the side dealing slight amounts of damage.");
-                            damage = new Random().Next(0, 2);
-                            pVar.hpWolf = pVar.hpWolf - (damage + 2);
-                            hpCheck();
-                        }
-                    }
-                    else
-                    {
-                        Write(true, "You fail to block the wolfs attack taking massive damage.");
-                        damage = new Random().Next(0, 2);
-                        pVar.hp = pVar.hp - (damage + 7);
+                        Write(true, "You block the wolfs bite with your torch burning its face while getting slightly burnt yourself.");
+                        damage = new Random().Next(0, 1);
+                        int damage2 = new Random().Next(0, 3);
+                        pVar.hp = pVar.hp - (damage + 1);
+                        pVar.hpWolf = pVar.hpWolf - (damage2 + 3);
                         hpCheck();
                     }
-                    break;
-                case "potion":
-
-                    if (pVar.potion == true)
+                    else if (pVar.litTorch == false)
+                    {
+                        Write(true, "You block the wolfs bite attack, throwing it to the side dealing slight amounts of damage.");
+                        damage = new Random().Next(0, 2);
+                        pVar.hpWolf = pVar.hpWolf - (damage + 2);
+                        hpCheck();
+                    }
+                }
+                else
+                {
+                    Write(true, "You fail to block the wolfs attack taking massive damage.");
+                    damage = new Random().Next(0, 2);
+                    pVar.hp = pVar.hp - (damage + 7);
+                    hpCheck();
+                }
+            
+            break;
+            case 2:
+            if (pVar.potion == true)
                     {
                         Write(true, "You drink the red potion");
                         int healing = new Random().Next(0, 6);
@@ -401,8 +410,7 @@ namespace projekt1
                         Write(true, "You don't have a potion.");
                         hpCheck();
                     }
-                    break;
-            }
+            break;
         }
         static void hpCheck()
         {
@@ -436,26 +444,26 @@ namespace projekt1
                 Write(true, "You died.");
             }
         }
+    }
         static void CaveLeft2()
         {
-            string input;
             Write(false, "There lies a dead wolf in this room, go forward or back? ");
-            input = Console.ReadLine();
-            input = input.ToLower();
-            if (input == "forward")
+            TBA.Selector selector = new TBA.Selector();
+            selector.Add("Forward");
+            selector.Add("Back");
+            int output = selector.Run();
+            selector.Clear();
+            System.Console.WriteLine();
+            switch(output)
             {
-                Write(true, "You walk to the next part of the cave.");
-                CaveEnd();
-            }
-            else if (input == "back")
-            {
-                Write(true, "You go back");
-                Cave();
-            }
-            else
-            {
-                Write(true, "Invalid choice.");
-                CaveLeft2();
+                case 0:
+                    Write(true, "You walk to the next part of the cave.");
+                    CaveEnd();
+                    break;
+                case 1:
+                    Write(true, "You go back");
+                    Cave();
+                    break;
             }
         }
         static void CaveEnd()
@@ -471,30 +479,8 @@ namespace projekt1
             Write(true, "You start the treck back home, thinking to yourself \"This party was awesome, I hope the birthday cake atleast isn't cardboard. I have to thank my friends for making this for me\".");
             System.Environment.Exit(0);
         }
-        static void Action()
-        {
-            System.Console.WriteLine("Helo");
-        }
     }
 }
-/*
-namespace Test
-{
-    class Program
-    {
-        static void Main()
-        {
-            TBA.Selector selector = new TBA.Selector();
-            selector.Add("test");
-            selector.Add("test2");
-            selector.Add("test3");
-            int output = selector.Run();
-            selector.Clear();
-            System.Console.WriteLine(output);
-        }
-    }
-}
-*/
 namespace TBA //Big brain kod från klasskompis. Har studerat tillräckligt för att förstå hur den fungerar, att skriva på egen hand skulle dock ta lång tid, mycket google och inte varit lika snyggt.
 {
     class Selector
