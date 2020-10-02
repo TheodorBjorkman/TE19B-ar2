@@ -262,24 +262,24 @@ namespace projekt1
             int output = selector.Run();
             selector.Clear();
             System.Console.WriteLine();
-            switch(output)
+            switch (output)
             {
-            case 0:
-                Write(true, "You and the wolf press forward in sync, circling one another in the room.");
-                Fight();
-            break;
-            case 1:
-            int random = new Random().Next(0, 101);
-                if (random <= 50)
-                {
-                    Write(true, "The wolf chased you down and felled you as you were running. You died.");
-                }
-                else
-                {
-                    Write(true, "The wolf stayed as you walked backwards to the cave entrance.");
-                    Cave();
-                }
-            break;
+                case 0:
+                    Write(true, "You and the wolf press forward in sync, circling one another in the room.");
+                    Fight();
+                    break;
+                case 1:
+                    int random = new Random().Next(0, 101);
+                    if (random <= 50)
+                    {
+                        Write(true, "The wolf chased you down and felled you as you were running. You died.");
+                    }
+                    else
+                    {
+                        Write(true, "The wolf stayed as you walked backwards to the cave entrance.");
+                        Cave();
+                    }
+                    break;
             }
         }
         static void CaveHidden()
@@ -299,30 +299,30 @@ namespace projekt1
                     int output = selector.Run();
                     selector.Clear();
                     System.Console.WriteLine();
-                    switch(output)
+                    switch (output)
                     {
-                    case 0:
-                    if (pVar.chestTrap == true)
-                        {
-                            Write(true, "As you open the chest you hear a small twang and feel a prick in your stomach before everything starts to fade. You died.");
+                        case 0:
+                            if (pVar.chestTrap == true)
+                            {
+                                Write(true, "As you open the chest you hear a small twang and feel a prick in your stomach before everything starts to fade. You died.");
 
-                        }
-                        else
-                        {
-                            Write(true, "You open the chest finding an artifact of immense power.");
-                            Thread.Sleep(1000);
-                            Write(true, "A small white dog jumps into the chest from behind you and absorbs the artifact. \nThe dog phases through the floor leaving only some white dust behind.");
-                            Thread.Sleep(2000);
-                            Write(true, "You walk back to the cave entrance.");
-                            Thread.Sleep(1000);
-                            pVar.dog = true;
+                            }
+                            else
+                            {
+                                Write(true, "You open the chest finding an artifact of immense power.");
+                                Thread.Sleep(1000);
+                                Write(true, "A small white dog jumps into the chest from behind you and absorbs the artifact. \nThe dog phases through the floor leaving only some white dust behind.");
+                                Thread.Sleep(2000);
+                                Write(true, "You walk back to the cave entrance.");
+                                Thread.Sleep(1000);
+                                pVar.dog = true;
+                                Cave();
+                            }
+                            break;
+                        case 1:
+                            Write(true, "You turn around and head back.");
                             Cave();
-                        }
-                    break;
-                    case 1:
-                    Write(true, "You turn around and head back.");
-                    Cave();
-                    break;
+                            break;
                     }
                     break;
             }
@@ -355,50 +355,50 @@ namespace projekt1
             int output = selector.Run();
             selector.Clear();
             System.Console.WriteLine();
-            switch(output)
+            switch (output)
             {
-            case 0:
-                Write(true, "You slash at the wolf with your weapon hitting it but getting slashed by claws in return");
-                int random = new Random().Next(0, 4);
-                Thread.Sleep(3);
-                int random2 = new Random().Next(1, 3);
-                pVar.hp = pVar.hp - (random + 3);
-                pVar.hpWolf = pVar.hpWolf - (random2 - pVar.atk);
-                hpCheck();
-                break;
-            case 1:
-                int damage;
-                int success = new Random().Next(0, 3);
-                if (success <= 2)
-                {
-                    if (pVar.litTorch == true)
-                    {
-                        Write(true, "You block the wolfs bite with your torch burning its face while getting slightly burnt yourself.");
-                        damage = new Random().Next(0, 1);
-                        int damage2 = new Random().Next(0, 3);
-                        pVar.hp = pVar.hp - (damage + 1);
-                        pVar.hpWolf = pVar.hpWolf - (damage2 + 3);
-                        hpCheck();
-                    }
-                    else if (pVar.litTorch == false)
-                    {
-                        Write(true, "You block the wolfs bite attack, throwing it to the side dealing slight amounts of damage.");
-                        damage = new Random().Next(0, 2);
-                        pVar.hpWolf = pVar.hpWolf - (damage + 2);
-                        hpCheck();
-                    }
-                }
-                else
-                {
-                    Write(true, "You fail to block the wolfs attack taking massive damage.");
-                    damage = new Random().Next(0, 2);
-                    pVar.hp = pVar.hp - (damage + 7);
+                case 0:
+                    Write(true, "You slash at the wolf with your weapon hitting it but getting slashed by claws in return");
+                    int random = new Random().Next(0, 4);
+                    Thread.Sleep(3);
+                    int random2 = new Random().Next(1, 3);
+                    pVar.hp = pVar.hp - (random + 3);
+                    pVar.hpWolf = pVar.hpWolf - (random2 - pVar.atk);
                     hpCheck();
-                }
-            
-            break;
-            case 2:
-            if (pVar.potion == true)
+                    break;
+                case 1:
+                    int damage;
+                    int success = new Random().Next(0, 3);
+                    if (success <= 2)
+                    {
+                        if (pVar.litTorch == true)
+                        {
+                            Write(true, "You block the wolfs bite with your torch burning its face while getting slightly burnt yourself.");
+                            damage = new Random().Next(0, 1);
+                            int damage2 = new Random().Next(0, 3);
+                            pVar.hp = pVar.hp - (damage + 1);
+                            pVar.hpWolf = pVar.hpWolf - (damage2 + 3);
+                            hpCheck();
+                        }
+                        else if (pVar.litTorch == false)
+                        {
+                            Write(true, "You block the wolfs bite attack, throwing it to the side dealing slight amounts of damage.");
+                            damage = new Random().Next(0, 2);
+                            pVar.hpWolf = pVar.hpWolf - (damage + 2);
+                            hpCheck();
+                        }
+                    }
+                    else
+                    {
+                        Write(true, "You fail to block the wolfs attack taking massive damage.");
+                        damage = new Random().Next(0, 2);
+                        pVar.hp = pVar.hp - (damage + 7);
+                        hpCheck();
+                    }
+
+                    break;
+                case 2:
+                    if (pVar.potion == true)
                     {
                         Write(true, "You drink the red potion");
                         int healing = new Random().Next(0, 6);
@@ -410,41 +410,41 @@ namespace projekt1
                         Write(true, "You don't have a potion.");
                         hpCheck();
                     }
-            break;
+                    break;
+            }
+            static void hpCheck()
+            {
+                if (pVar.hp >= 12)
+                {
+                    Write(true, "You are undamaged");
+                    Location();
+                }
+                else if (pVar.hp >= 10)
+                {
+                    Write(true, "You are slightly hurt");
+                    Location();
+                }
+                else if (pVar.hp >= 6)
+                {
+                    Write(true, "You are hurt");
+                    Location();
+                }
+                else if (pVar.hp >= 4)
+                {
+                    Write(true, "You are dying");
+                    Location();
+                }
+                else if (pVar.hp >= 1)
+                {
+                    Write(true, "You are almost dead");
+                    Location();
+                }
+                else
+                {
+                    Write(true, "You died.");
+                }
+            }
         }
-        static void hpCheck()
-        {
-            if (pVar.hp >= 12)
-            {
-                Write(true, "You are undamaged");
-                Location();
-            }
-            else if (pVar.hp >= 10)
-            {
-                Write(true, "You are slightly hurt");
-                Location();
-            }
-            else if (pVar.hp >= 6)
-            {
-                Write(true, "You are hurt");
-                Location();
-            }
-            else if (pVar.hp >= 4)
-            {
-                Write(true, "You are dying");
-                Location();
-            }
-            else if (pVar.hp >= 1)
-            {
-                Write(true, "You are almost dead");
-                Location();
-            }
-            else
-            {
-                Write(true, "You died.");
-            }
-        }
-    }
         static void CaveLeft2()
         {
             Write(false, "There lies a dead wolf in this room, go forward or back? ");
@@ -454,7 +454,7 @@ namespace projekt1
             int output = selector.Run();
             selector.Clear();
             System.Console.WriteLine();
-            switch(output)
+            switch (output)
             {
                 case 0:
                     Write(true, "You walk to the next part of the cave.");
@@ -481,7 +481,7 @@ namespace projekt1
         }
     }
 }
-namespace TBA //Big brain kod från klasskompis. Har studerat tillräckligt för att förstå hur den fungerar, att skriva på egen hand skulle dock ta lång tid, mycket google och inte varit lika snyggt.
+namespace TBA //Big brain kod från Fritiof. Har studerat tillräckligt för att förstå hur den fungerar, att skriva på egen hand skulle dock ta lång tid, mycket google och inte varit lika snyggt.
 {
     class Selector
     {
@@ -529,7 +529,7 @@ namespace TBA //Big brain kod från klasskompis. Har studerat tillräckligt för
             Console.SetCursorPosition(0, pos);
             Console.Write(text);
         }
-        static void Write(bool line, string write) //cool writing system
+        static void Write(bool line, string write) //kopierade in från min egen kod. Kan nog göra den till public men jag orkar inte.
         {
 
             if (line == false)
