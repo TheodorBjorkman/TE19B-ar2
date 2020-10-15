@@ -6,12 +6,7 @@ namespace Uppgift1
     {
         static void Main(string[] args)
         {
-            System.Console.WriteLine("skriv nåt");
-            string input = Console.ReadLine();
-            for(int i = input.Length; i >= 0; i--)
-            {
-                
-            }
+            
         }
     }
 }
