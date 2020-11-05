@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 
 namespace test
 {
@@ -7,13 +6,20 @@ namespace test
     {
         static void Main(string[] args)
         {
-            int i;
-            System.Console.Write("Write something: ");
-            string test = Console.ReadLine();
-            for(i = 0; i <= test.Length - 1; i++)
+            while (true)
             {
-                Thread.Sleep(50);
-                Console.Write(test.Substring(i, 1));
+                string input = Console.ReadLine();
+                int nummer;
+                bool succ = int.TryParse(input, out nummer);
+                if (succ)
+                {
+                    System.Console.WriteLine(nummer);
+                    break;
+                }
+                else
+                {
+                    System.Console.WriteLine("Skriv ett nummer");
+                }
             }
         }
     }

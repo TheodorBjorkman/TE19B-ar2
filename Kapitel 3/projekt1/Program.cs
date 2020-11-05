@@ -529,7 +529,7 @@ namespace TBA //Big brain kod från Fritiof. Har studerat tillräckligt för att
             Console.SetCursorPosition(0, pos);
             Console.Write(text);
         }
-        static void Write(bool line, string write) //kopierade in från min egen kod. Kan nog göra den till public men jag orkar inte.
+        static void Write(bool line, string write) //kopierade in från min egen kod. Kan nog göra den till public men jag orkar inte. Gör det också lättare att copy pasta hela mey systemet.
         {
 
             if (line == false)
