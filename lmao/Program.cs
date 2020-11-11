@@ -61,13 +61,12 @@ namespace lmao
                         System.Console.WriteLine($"Datorn fick över 21 ({cTotal}). Du vann!");
                         Again();
                     }
-                    if (cTotal > pTotal && cTotal <= 21)
+                    if (cTotal >= pTotal && cTotal <= 21)
                     {
                         System.Console.WriteLine($"Datorn fick {cTotal} vilket är mer än dig ({pTotal}). Du förlorade.");
                         Again();
                     }
                 }
-                play = false;
             }
         }
         static void Again()
