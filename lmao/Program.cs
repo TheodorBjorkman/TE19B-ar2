@@ -7,37 +7,85 @@ namespace lmao
 {
     class Program
     {
-        static void Main(string[] )
+        static void Main()
         {
             int pTotal = 0;
+            int cTotal = 0;
+            int firstDraw = 0;
+            int drawed;
             Random rnd = new Random();
             bool play = true;
             bool draw = true;
+            bool first = true;
             System.Console.WriteLine("Blackjack!");
             while (play)
             {
                 while (draw)
                 {
-                    int drawed = rnd.Next(1, 11);
+                    if (first)
+                    {
+                        firstDraw = rnd.Next(1, 11);
+                        pTotal = pTotal + firstDraw;
+                    }
+                    drawed = rnd.Next(1, 11);
                     pTotal = pTotal + drawed;
-                    System.Console.WriteLine($"Du drog {drawed} du har {pTotal}. Dra ett till kort?");
+                    if (pTotal > 21)
+                    {
+                        System.Console.WriteLine($"Du drog {drawed} och kom över 21 ({pTotal}). Du förlorade.");
+                        Again();
+                    }
+                    if (first)
+                    {
+                        System.Console.WriteLine($"Du drog {drawed} och {firstDraw} du har {pTotal}. Dra ett till kort?");
+                    }
+                    else
+                    {
+                        System.Console.WriteLine($"Du drog {drawed} du har {pTotal}. Dra ett till kort?");
+                    }
+                    first = false;
                     Selector selector = new Selector();
                     selector.Add("Dra");
                     selector.Add("Stanna");
                     int output = selector.Run();
                     selector.Clear();
                     Console.WriteLine();
-                    switch (output)
-                    {
-                        case 0:
-                            System.Console.WriteLine("Case 1");
-                            break;
-                        case 1:
-                            System.Console.WriteLine("Case 2");
-                            break;
-                    }
-                    Environment.Exit(0);
+                    if (output == 1) draw = false;
                 }
+                draw = true;
+                while (draw)
+                {
+                    drawed = rnd.Next(1, 11);
+                    cTotal = cTotal + drawed;
+                    if (cTotal > 21)
+                    {
+                        System.Console.WriteLine($"Datorn fick över 21 ({cTotal}). Du vann!");
+                        Again();
+                    }
+                    if (cTotal > pTotal && cTotal <= 21)
+                    {
+                        System.Console.WriteLine($"Datorn fick {cTotal} vilket är mer än dig ({pTotal}). Du förlorade.");
+                        Again();
+                    }
+                }
+                play = false;
+            }
+        }
+        static void Again()
+        {
+            System.Console.WriteLine("Spela igen?");
+            Selector selector = new Selector();
+            selector.Add("Spela igen");
+            selector.Add("Avsluta");
+            int output = selector.Run();
+            selector.Clear();
+            Console.WriteLine();
+            if (output == 0)
+            {
+                Main();
+            }
+            else
+            {
+                Environment.Exit(0);
             }
         }
     }
