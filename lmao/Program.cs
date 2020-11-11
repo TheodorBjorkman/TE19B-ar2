@@ -7,6 +7,7 @@ namespace lmao
 {
     class Program
     {
+        string vinnare = "Ingen";
         static void Main()
         {
             int pTotal = 0;
@@ -18,6 +19,30 @@ namespace lmao
             bool draw = true;
             bool first = true;
             System.Console.WriteLine("Blackjack!");
+            while (true)
+            {
+                Selector selector = new Selector();
+                selector.Add("Kör");
+                selector.Add("Senaste vinnare");
+                selector.Add("Regler");
+                selector.Add("Avsluta");
+                int utput = selector.Run();
+                selector.Clear();
+                System.Console.WriteLine();
+                switch (utput)
+                {
+                    case 0:
+                        break;
+                    case 1:
+                        System.Console.WriteLine(vinnare);
+                        break;
+                    case 2:
+
+
+                    case 3:
+
+                }
+            }
             while (play)
             {
                 while (draw)
@@ -32,6 +57,7 @@ namespace lmao
                     if (pTotal > 21)
                     {
                         System.Console.WriteLine($"Du drog {drawed} och kom över 21 ({pTotal}). Du förlorade.");
+                        vinnare = "Datorn";
                         Again();
                     }
                     if (first)
@@ -59,11 +85,13 @@ namespace lmao
                     if (cTotal > 21)
                     {
                         System.Console.WriteLine($"Datorn fick över 21 ({cTotal}). Du vann!");
+                        vinnare = "Spelaren";
                         Again();
                     }
                     if (cTotal >= pTotal && cTotal <= 21)
                     {
                         System.Console.WriteLine($"Datorn fick {cTotal} vilket är mer än dig ({pTotal}). Du förlorade.");
+                        vinnare = "Datorn";
                         Again();
                     }
                 }
