@@ -5,9 +5,12 @@ using System.Threading;
 
 namespace lmao
 {
+    static class Vinnare
+    {
+        static public string vinnare = "Ingen";
+    }
     class Program
     {
-        string vinnare = "Ingen";
         static void Main()
         {
             int pTotal = 0;
@@ -18,8 +21,9 @@ namespace lmao
             bool play = true;
             bool draw = true;
             bool first = true;
+            bool loop = true;
             System.Console.WriteLine("Blackjack!");
-            while (true)
+            while (loop)
             {
                 Selector selector = new Selector();
                 selector.Add("Kör");
@@ -32,15 +36,17 @@ namespace lmao
                 switch (utput)
                 {
                     case 0:
+                        loop = false;
                         break;
                     case 1:
-                        System.Console.WriteLine(vinnare);
+                        System.Console.WriteLine(Vinnare.vinnare);
                         break;
                     case 2:
-
-
+                        Rules();
+                        break;
                     case 3:
-
+                        Environment.Exit(0);
+                        break;
                 }
             }
             while (play)
@@ -57,8 +63,8 @@ namespace lmao
                     if (pTotal > 21)
                     {
                         System.Console.WriteLine($"Du drog {drawed} och kom över 21 ({pTotal}). Du förlorade.");
-                        vinnare = "Datorn";
-                        Again();
+                        Vinnare.vinnare = "Datorn";
+                        Main();
                     }
                     if (first)
                     {
@@ -85,38 +91,31 @@ namespace lmao
                     if (cTotal > 21)
                     {
                         System.Console.WriteLine($"Datorn fick över 21 ({cTotal}). Du vann!");
-                        vinnare = "Spelaren";
-                        Again();
+                        Vinnare.vinnare = "Spelaren";
+                        Main();
                     }
                     if (cTotal >= pTotal && cTotal <= 21)
                     {
                         System.Console.WriteLine($"Datorn fick {cTotal} vilket är mer än dig ({pTotal}). Du förlorade.");
-                        vinnare = "Datorn";
-                        Again();
+                        Vinnare.vinnare = "Datorn";
+                        Main();
                     }
                 }
             }
         }
-        static void Again()
+        static void Rules()
         {
-            System.Console.WriteLine("Spela igen?");
+            System.Console.WriteLine("Du drar kort som har värden från 1 till 10. \nI början drar du två kort sedan får du välja om du vill dra mer. \nOm du kommer över totalt 21 poäng förlorar du. \nEfter du väljer att inte dra fler kort drar datorn kort, om datorn drar mer än dig men under 22 vinner datorn.");
             Selector selector = new Selector();
-            selector.Add("Spela igen");
-            selector.Add("Avsluta");
-            int output = selector.Run();
+            selector.Add("Fortsätt");
+            selector.Run();
             selector.Clear();
-            Console.WriteLine();
-            if (output == 0)
-            {
-                Main();
-            }
-            else
-            {
-                Environment.Exit(0);
-            }
+            System.Console.WriteLine();
+            Main();
         }
     }
 }
+
 namespace TBA //Big brain kod från Fritiof. Har studerat tillräckligt för att förstå hur den fungerar, att skriva på egen hand skulle dock ta lång tid, mycket google och inte varit lika snyggt.
 {
     class Selector
