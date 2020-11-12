@@ -5,12 +5,9 @@ using System.Threading;
 
 namespace lmao
 {
-    static class Vinnare
-    {
-        static public string vinnare = "Ingen";
-    }
     class Program
     {
+        static public string vinnare = "Ingen";
         static void Main()
         {
             int pTotal = 0;
@@ -22,7 +19,7 @@ namespace lmao
             bool draw = true;
             bool first = true;
             bool loop = true;
-            System.Console.WriteLine("Blackjack!");
+            Console.WriteLine("Välkommen till 21:an!");
             while (loop)
             {
                 Selector selector = new Selector();
@@ -39,7 +36,7 @@ namespace lmao
                         loop = false;
                         break;
                     case 1:
-                        System.Console.WriteLine(Vinnare.vinnare);
+                        System.Console.WriteLine(vinnare);
                         break;
                     case 2:
                         Rules();
@@ -63,7 +60,7 @@ namespace lmao
                     if (pTotal > 21)
                     {
                         System.Console.WriteLine($"Du drog {drawed} och kom över 21 ({pTotal}). Du förlorade.");
-                        Vinnare.vinnare = "Datorn";
+                        vinnare = "Datorn";
                         Main();
                     }
                     if (first)
@@ -88,16 +85,18 @@ namespace lmao
                 {
                     drawed = rnd.Next(1, 11);
                     cTotal = cTotal + drawed;
+                    System.Console.WriteLine($"Datorn drog {drawed} och har {cTotal}");
+                    Thread.Sleep(2000);
                     if (cTotal > 21)
                     {
-                        System.Console.WriteLine($"Datorn fick över 21 ({cTotal}). Du vann!");
-                        Vinnare.vinnare = "Spelaren";
+                        System.Console.WriteLine($"Datorn fick över 21 ({cTotal}). Du vann! \nSkriv ditt namn:");
+                        vinnare = Console.ReadLine();
                         Main();
                     }
                     if (cTotal >= pTotal && cTotal <= 21)
                     {
-                        System.Console.WriteLine($"Datorn fick {cTotal} vilket är mer än dig ({pTotal}). Du förlorade.");
-                        Vinnare.vinnare = "Datorn";
+                        System.Console.WriteLine($"Datorn fick {cTotal} vilket är lika mycket eller mer än dig ({pTotal}). Du förlorade.");
+                        vinnare = "Datorn";
                         Main();
                     }
                 }
