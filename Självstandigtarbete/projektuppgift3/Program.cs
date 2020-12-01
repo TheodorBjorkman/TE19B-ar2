@@ -8,24 +8,25 @@ namespace projektuppgift3
 {
     class Program
     {
+        static int width = 6;
+        static int height = 5;
         static bool startup = true;
-        static int[] map = new int[6, 5];
+        static int[,] map = new int[6, 5];
+        static int[,] trueMap = new int[6, 5];
+        static int[,] mapc = new int[6, 5];
+        static int[,] trueMapc = new int[6, 5];
+        static Random rng = new Random();
         static void Main()
         {
             if (startup)
             {
-                for (int i = 0; i < 6; i++)
-                {
-                    for (int j = 0; j < 5; j++)
-                    {
-                        map[i, j] = 0;
-                    }
-                }
+                Setup();
             }
             while (true)
             {
-                int output = Menu("Hej Hoj Haj".Split(" "));
-                System.Console.WriteLine(output);
+                int outputx = Menu("1 2 3 4 5 6".Split(" "));
+                int outputy = Menu("1 2 3 4 5".Split(" "));
+                System.Console.WriteLine(outputx + outputy);
             }
         }
         static int Menu(string[] items)
@@ -36,6 +37,32 @@ namespace projektuppgift3
                 selector.Add(item);
             }
             return selector.Run();
+        }
+        static void Setup()
+        {
+            for (int i = 0; i < 6; i++)
+            {
+                for (int j = 0; j < 5; j++)
+                {
+                    map[i, j] = 0;
+                    trueMap[i,j] = 0;
+                    mapc[i, j] = 0;
+                    trueMapc[i, j] = 0;
+                }
+            }
+            for (int i = 0; i < 5; i++)
+            {
+                int boatx = rng.Next(0, 7);
+                int boaty = rng.Next(0, 6);
+                if (trueMap[boatx, boaty] == 0) trueMap[boatx, boaty] = 1;
+                boatx = rng.Next(0, 7);
+                boaty = rng.Next(0, 6);
+                if (trueMapc[boatx, boaty] == 0) trueMapc[boatx, boaty] = 1;
+            }
+        }
+        static void Shoot(int x, int y, bool player)
+        {
+
         }
     }
 }
