@@ -4,7 +4,7 @@ namespace _6._30
 {
     class Program
     {
-        static int[] cards = { 5 };
+        static int[] cards = { 5, 4, 2, 4 };
         static void Main()
         {
             int total = 0;
