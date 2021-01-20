@@ -1,0 +1,9 @@
+1;1;a;a
+2;153;a;g
+3;0;Inga;gäster
+4;0;Inga;gäster
+5;0;Inga;gäster
+6;0;Inga;gäster
+7;0;Inga;gäster
+8;5321;a;q
+t

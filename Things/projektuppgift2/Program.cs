@@ -8,7 +8,7 @@ namespace projektuppgift2
 {
     class Program
     {
-        static string defaultInfo = "Bord 1 - Inga gäster\nBord 2 - Inga gäster\nBord 3 - Inga gäster\nBord 4 - Inga gäster\nBord 5 - Inga gäster\nBord 6 - Inga gäster\nBord 7 - Inga gäster\nBord 8 - Inga gäster\nTotalt antal gäster: 0";
+        static string defaultInfo = "1;0;Inga;gäster\n2;0;Inga;gäster\n3;0;Inga;gäster\n4;0;Inga;gäster\n5;0;Inga;gäster\n6;0;Inga;gäster\n7;0;Inga;gäster\n8;0;Inga;gäster\nt";
         static string[] defaultInfoArray = defaultInfo.Split("\n");
         static string[] infoArray = defaultInfoArray;
         static bool start = true;
@@ -50,7 +50,20 @@ namespace projektuppgift2
             switch (input)
             {
                 case 0:
-                    foreach (string line in File.ReadAllLines("tableInfo.txt")) System.Console.WriteLine(line);
+                    int total = 0;
+                    foreach (string line in File.ReadAllLines("tableInfo.txt")) 
+                    {
+                        if (line.Length > 1)
+                        {
+                            string[] raw = line.Split(";");
+                            Console.Write($"Bord {raw[0]} - {raw[2]} {raw[3]}.");
+                            if (int.Parse(raw[1]) > 0) Console.WriteLine($" Antal gäster: {raw[1]}"); else System.Console.WriteLine();
+                            total += int.Parse(raw[1]);
+                        } else
+                        {
+                            Console.WriteLine("Totalt antal gäster: " + total);
+                        }
+                    }
                     selector.Add("Fortsätt");
                     int lol = selector.Run();
                     selector.Clear();
@@ -70,31 +83,27 @@ namespace projektuppgift2
         }
         static void Edit()
         {
-            int nada;
+            int nada = 0;
+            bool succ = false;
             string[] input = new string[3];
             System.Console.Clear();
             System.Console.WriteLine("Välj bordet att ändra");
             Selector selector = new Selector();
-            selector.Add("Bord 1");
-            selector.Add("Bord 2");
-            selector.Add("Bord 3");
-            selector.Add("Bord 4");
-            selector.Add("Bord 5");
-            selector.Add("Bord 6");
-            selector.Add("Bord 7");
-            selector.Add("Bord 8");
+            for (int x = 1; x <= 8; x++)
+            {
+                selector.Add($"Bord {x}");
+            }
             int output = selector.Run();
             selector.Clear();
-            System.Console.WriteLine();
-            System.Console.WriteLine("Skriv förnamn efternamn och antal gäster med mellanrum");
-            string[] inputTrue = Console.ReadLine().Split(" ");
-            while(inputTrue.Length != 3 && int.TryParse(inputTrue[2], out nada)) {
+            while(true/*!succ && nada > 0*/) {
                 System.Console.WriteLine();
                 System.Console.WriteLine("Skriv förnamn efternamn och antal gäster med mellanrum");
-                inputTrue = Console.ReadLine().Split(" ");
+                string[] inputTrue = Console.ReadLine().Split(" ");
                 input = inputTrue;
+                if(inputTrue.Length == 3) succ = int.TryParse(inputTrue[2], out nada);
+                if(succ && nada > 0) break;
             }
-            infoArray[output] = $"Bord {(output + 1)} - {input[0]} {input[1]}, antal gäster: {input[2]}";
+            infoArray[output] = $"{(output + 1)};{input[2]};{input[0]};{input[1]}";
             UpdateList();
         }
         static void Empty()
@@ -102,14 +111,10 @@ namespace projektuppgift2
             System.Console.Clear();
             System.Console.WriteLine("Välj bordet att tömma");
             Selector selector = new Selector();
-            selector.Add("Bord 1");
-            selector.Add("Bord 2");
-            selector.Add("Bord 3");
-            selector.Add("Bord 4");
-            selector.Add("Bord 5");
-            selector.Add("Bord 6");
-            selector.Add("Bord 7");
-            selector.Add("Bord 8");
+            for (int x = 1; x <= 8; x++)
+            {
+                selector.Add($"Bord {x}");
+            }
             int output = selector.Run();
             selector.Clear();
             System.Console.WriteLine();

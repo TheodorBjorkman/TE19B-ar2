@@ -1,4 +1,4 @@
-Bord 1 - Inga gäster
+Bord 1 -  , antal gäster: 
 Bord 2 - Inga gäster
 Bord 3 - Inga gäster
 Bord 4 - Inga gäster
