@@ -7,11 +7,15 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/projektuppgift2/projektuppgift2.csproj",
+                "${workspaceFolder}/Video.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
-            "problemMatcher": "$msCompile"
+            "problemMatcher": "$msCompile",
+            "presentation": {
+                "reveal": "silent",
+                "clear": true
+              }
         },
         {
             "label": "publish",
@@ -19,7 +23,7 @@
             "type": "process",
             "args": [
                 "publish",
-                "${workspaceFolder}/projektuppgift2/projektuppgift2.csproj",
+                "${workspaceFolder}/Video.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -32,7 +36,7 @@
             "args": [
                 "watch",
                 "run",
-                "${workspaceFolder}/projektuppgift2/projektuppgift2.csproj",
+                "${workspaceFolder}/Video.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],

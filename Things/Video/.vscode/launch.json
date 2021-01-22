@@ -10,11 +10,11 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/projektuppgift2/bin/Debug/netcoreapp3.1/projektuppgift2.dll",
+            "program": "${workspaceFolder}/bin/Debug/netcoreapp3.1/Video.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/projektuppgift2",
+            "cwd": "${workspaceFolder}",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
-            "console": "externalTerminal",
+            "console": "integratedTerminal",
             "stopAtEntry": false
         },
         {
