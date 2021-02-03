@@ -8,7 +8,7 @@ namespace projektuppgift2
 {
     class Program
     {
-        static string defaultInfo = "1;0;Inga;gäster\n2;0;Inga;gäster\n3;0;Inga;gäster\n4;0;Inga;gäster\n5;0;Inga;gäster\n6;0;Inga;gäster\n7;0;Inga;gäster\n8;0;Inga;gäster\nt";
+        static string defaultInfo = "1;0;Inga;gäster\n2;0;Inga;gäster\n3;0;Inga;gäster\n4;0;Inga;gäster\n5;0;Inga;gäster\n6;0;Inga;gäster\n7;0;Inga;gäster\n8;0;Inga;gäster";
         static string[] defaultInfoArray = defaultInfo.Split("\n");
         static string[] infoArray = defaultInfoArray;
         static bool start = true;
@@ -16,17 +16,27 @@ namespace projektuppgift2
         {
             System.Console.Clear();
             System.Console.WriteLine("Detta är Centralrestaurangens bordshanterare");
-            if (File.Exists("tableInfo.txt"))
+            Selector selector = new Selector();
+            selector.Add("Skapa ny fil");
+            selector.Add("Använd en existerande fil");
+            selector.Add("Ta bort en fil");
+            selector.Add("Använd senast använd fil");
+            int output = selector.Run();
+            selector.Clear();
+            switch(output)
             {
-                System.Console.WriteLine("Bordsinformation lästes in från fil");
-                infoArray = File.ReadAllLines("tableInfo.txt");
+                case 0:
+                CreateFile();
+                break;
+                case 1:
+                ChooseFile();
+                break;
+                case 2:
+                DeleteFile();
+                break;
+                case 3:
+                break;
             }
-            else
-            {
-                File.WriteAllLines("tableInfo.txt", defaultInfoArray);
-                System.Console.WriteLine("Fil med bordsinformation hittades ej, ny information skapades");
-            }
-            Selection();
         }
         static void UpdateList()
         {
@@ -43,6 +53,7 @@ namespace projektuppgift2
             selector.Add("Visa alla bord");
             selector.Add("Lägg till/ändra bordsinformation");
             selector.Add("Markera att ett bord är tomt");
+            selector.Add("Gå till filhanteraren");
             selector.Add("Avsluta");
             int input = selector.Run();
             selector.Clear();
@@ -53,17 +64,12 @@ namespace projektuppgift2
                     int total = 0;
                     foreach (string line in File.ReadAllLines("tableInfo.txt")) 
                     {
-                        if (line.Length > 1)
-                        {
-                            string[] raw = line.Split(";");
-                            Console.Write($"Bord {raw[0]} - {raw[2]} {raw[3]}.");
-                            if (int.Parse(raw[1]) > 0) Console.WriteLine($" Antal gäster: {raw[1]}"); else System.Console.WriteLine();
-                            total += int.Parse(raw[1]);
-                        } else
-                        {
-                            Console.WriteLine("Totalt antal gäster: " + total);
-                        }
+                        string[] raw = line.Split(";");
+                        Console.Write($"Bord {raw[0]} - {raw[2]} {raw[3]}.");
+                        if (int.Parse(raw[1]) > 0) Console.WriteLine($" Antal gäster: {raw[1]}"); else System.Console.WriteLine();
+                        total += int.Parse(raw[1]);
                     }
+                    Console.WriteLine("Totalt antal gäster: " + total);
                     selector.Add("Fortsätt");
                     int lol = selector.Run();
                     selector.Clear();
@@ -77,6 +83,9 @@ namespace projektuppgift2
                     Empty();
                     break;
                 case 3:
+                    Main();
+                    break;
+                case 4:
                     Environment.Exit(0);
                     break;
             }
@@ -121,6 +130,61 @@ namespace projektuppgift2
             infoArray[output] = defaultInfoArray[output];
             System.Console.WriteLine($"Bord {(output + 1)} har tömts");
             UpdateList();
+        }
+        static void Verify()
+        {
+
+        }
+        static void ChooseFile()
+        {
+            if (File.Exists("tableInfo.txt"))
+            {
+                System.Console.WriteLine("Bordsinformation lästes in från fil");
+                infoArray = File.ReadAllLines("tableInfo.txt");
+            }
+            else
+            {
+                File.WriteAllLines("tableInfo.txt", defaultInfoArray);
+                System.Console.WriteLine("Fil med bordsinformation hittades ej, ny information skapades");
+            }
+        }
+        static void CreateFile()
+        {
+            int tableAmount;
+            bool first = true;
+            System.Console.WriteLine("Skriv hur många bord du vill ha");
+            bool integer = false;
+            while (!integer)
+            {
+                if (!first)
+                {
+                    System.Console.WriteLine("Fel sorts input");
+                } else 
+                {
+                    first = false;
+                }
+                integer = int.TryParse(Console.ReadLine(), out tableAmount);
+            }
+            System.Console.WriteLine("Skriv namnet på filen");
+            string fileName = Console.ReadLine();
+            if (File.Exists(fileName + ".txt"))
+            {
+                Console.Clear();
+                System.Console.WriteLine("Filen existerar redan. Vill du skriva över den?");
+                Selector selector = new Selector();
+                selector.Add("Ja");
+                selector.Add("Nej");
+                int input = selector.Run();
+                selector.Clear();
+                if (input == 0)
+                {
+                    
+                }
+            }
+        }
+        static void DeleteFile()
+        {
+
         }
     }
 }
