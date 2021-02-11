@@ -1,8 +1,0 @@
-1;1;a;a
-2;0;Inga;gäster
-3;0;Inga;gäster
-4;0;Inga;gäster
-5;0;Inga;gäster
-6;0;Inga;gäster
-7;0;Inga;gäster
-8;0;Inga;gäster
