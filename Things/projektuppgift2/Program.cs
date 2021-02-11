@@ -11,7 +11,7 @@ namespace projektuppgift2
         static int tables = 8;
         static string currentFile = "";
         static List<string> content = new List<string>();
-        static string defaultInfo = ";0;Inga;Gäster";
+        static string defaultInfo = ";0;Inga;Gäster;0";
         static void Main()
         {
             if (File.Exists("lastUsed.csv"))
@@ -72,6 +72,7 @@ namespace projektuppgift2
                 selector.Add("Lägg till/ändra bordsinformation");
                 selector.Add("Markera att ett bord är tomt");
                 selector.Add("Gå till filhanteraren");
+                selector.Add("Ändra nota");
                 selector.Add("Avsluta");
                 int input = selector.Run();
                 selector.Clear();
@@ -84,7 +85,9 @@ namespace projektuppgift2
                         {
                             string[] raw = line.Split(";");
                             Console.Write($"Bord {raw[0]} - {raw[2]} {raw[3]}.");
-                            if (int.Parse(raw[1]) > 0) Console.WriteLine($" Antal gäster: {raw[1]}"); else System.Console.WriteLine();
+                            if (int.Parse(raw[1]) > 0 && int.Parse(raw[4]) > 0) Console.WriteLine($" Antal gäster: {raw[1]}. Nota: {raw[4]}"); 
+                            else if (int.Parse(raw[1]) > 0) Console.WriteLine($" Antal gäster: {raw[1]}.");
+                            else System.Console.WriteLine();
                             total += int.Parse(raw[1]);
                         }
                         Console.WriteLine("Totalt antal gäster: " + total);
@@ -104,10 +107,43 @@ namespace projektuppgift2
                         Main();
                         break;
                     case 4:
+                        Bill();
+                        break;
+                    case 5:
                         Environment.Exit(0);
                         break;
                 }
             }
+        }
+        static void Bill()
+        {
+            System.Console.Clear();
+            System.Console.WriteLine("Välj bordet att ändra notan på");
+            Selector selector = new Selector();
+            for (int x = 0; x < tables; x++)
+            {
+                selector.Add($"Bord {x + 1}");
+            }
+            int output = selector.Run();
+            selector.Clear();
+            int input;
+            while (true)
+            {
+                System.Console.WriteLine("Skriv ny nota");
+                if (int.TryParse(Console.ReadLine(), out input))
+                {
+                    if (input > 0)
+                    {
+                        break;
+                    }
+                }
+            }
+            string[] contentArray = content[output].Split(";");
+            contentArray[4] = $"{input}";
+            string temp = string.Join(";", contentArray);
+            content[output] = temp;
+            Console.Clear();
+            File.WriteAllLines(currentFile, content);
         }
         static void Edit()
         {
@@ -132,7 +168,8 @@ namespace projektuppgift2
                 if (inputTrue.Length == 3) succ = int.TryParse(inputTrue[2], out nada);
                 if (succ && nada > 0) break;
             }
-            content[output] = $"{(output + 1)};{input[2]};{input[0]};{input[1]}";
+            string[] contentArray = content[output].Split(";");
+            content[output] = $"{(output + 1)};{input[2]};{input[0]};{input[1]};{contentArray[4]}";
             File.WriteAllLines(currentFile, content);
             Console.Clear();
         }
@@ -163,7 +200,7 @@ namespace projektuppgift2
                 string[] items = item.Split(";");
                 for (int i = 0; i < items.Length; i++)
                 {
-                    if (i != 2 && i != 3)
+                    if (i != 2 && i != 3 && items.Length != 5)
                     {
                         if (!int.TryParse(items[i], out empty)) test = false;
                     }

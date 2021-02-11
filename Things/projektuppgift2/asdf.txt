@@ -1,5 +1,5 @@
-1;0;Inga;Gäster
-2;0;Inga;Gäster
-3;0;Inga;Gäster
-4;0;Inga;Gäster
-5;0;Inga;Gäster
+1;1;a;b;31
+2;0;Inga;Gäster;0
+3;0;Inga;Gäster;0
+4;0;Inga;Gäster;0
+5;0;Inga;Gäster;0
