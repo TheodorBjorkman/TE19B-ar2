@@ -14,13 +14,17 @@ namespace projektuppgift2
         static string defaultInfo = ";0;Inga;Gäster";
         static void Main()
         {
-            if (File.Exists("lastUsed.csv")) {
+            if (File.Exists("lastUsed.csv"))
+            {
                 currentFile = File.ReadAllLines("lastUsed.csv")[0].Trim();
-            } else {
+            }
+            else
+            {
                 File.Create("lastUsed.csv").Close();
                 File.WriteAllText("lastUsed.csv", "null");
             }
-            while (true) {
+            while (true)
+            {
                 System.Console.Clear();
                 System.Console.WriteLine("Detta är Centralrestaurangens bordshanterare");
                 Selector selector = new Selector();
@@ -30,22 +34,30 @@ namespace projektuppgift2
                 selector.Add("Använd senast använd fil");
                 int output = selector.Run();
                 selector.Clear();
-                switch(output)
+                switch (output)
                 {
                     case 0:
-                    CreateFile();
-                    break;
+                        CreateFile();
+                        break;
                     case 1:
-                    ChooseFile();
-                    Selection();
-                    break;
+                        if (ChooseFile()) Selection();
+                        break;
                     case 2:
-                    DeleteFile();
-                    break;
+                        DeleteFile();
+                        break;
                     case 3:
-                    Verify();
-                    Selection();
-                    break;
+                        if (File.Exists(currentFile))
+                        {
+                            Verify();
+                            Selection();
+                        }
+                        else
+                        {
+                            Console.Clear();
+                            System.Console.WriteLine("Filen existerar inte, välj en annan fil. Tryck på en knapp för att fortsätta");
+                            Console.ReadLine();
+                        }
+                        break;
                 }
             }
         }
@@ -68,7 +80,7 @@ namespace projektuppgift2
                 {
                     case 0:
                         int total = 0;
-                        foreach (string line in File.ReadAllLines(currentFile)) 
+                        foreach (string line in File.ReadAllLines(currentFile))
                         {
                             string[] raw = line.Split(";");
                             Console.Write($"Bord {raw[0]} - {raw[2]} {raw[3]}.");
@@ -111,13 +123,14 @@ namespace projektuppgift2
             }
             int output = selector.Run();
             selector.Clear();
-            while(true/*!succ && nada > 0*/) {
+            while (true/*!succ && nada > 0*/)
+            {
                 System.Console.WriteLine();
                 System.Console.WriteLine("Skriv förnamn efternamn och antal gäster med mellanrum");
                 string[] inputTrue = Console.ReadLine().Split(" ");
                 input = inputTrue;
-                if(inputTrue.Length == 3) succ = int.TryParse(inputTrue[2], out nada);
-                if(succ && nada > 0) break;
+                if (inputTrue.Length == 3) succ = int.TryParse(inputTrue[2], out nada);
+                if (succ && nada > 0) break;
             }
             content[output] = $"{(output + 1)};{input[2]};{input[0]};{input[1]}";
             File.WriteAllLines(currentFile, content);
@@ -128,9 +141,9 @@ namespace projektuppgift2
             System.Console.Clear();
             System.Console.WriteLine("Välj bordet att tömma");
             Selector selector = new Selector();
-            for (int x = 1; x < tables; x++)
+            for (int x = 0; x < tables; x++)
             {
-                selector.Add($"Bord {x}");
+                selector.Add($"Bord {x + 1}");
             }
             int output = selector.Run();
             selector.Clear();
@@ -158,54 +171,65 @@ namespace projektuppgift2
             }
             return test;
         }
-        static void ChooseFile()
+        static bool ChooseFile()
         {
             while (true)
             {
                 Console.Clear();
-                System.Console.WriteLine("Välj filen du vill använda:");
                 string[] fileList = Directory.GetFiles($"{Directory.GetCurrentDirectory()}", "*.txt");
-                Selector selector = new Selector();
-                foreach (string item in fileList)
+                if (fileList.Length > 0)
                 {
-                    selector.Add(item);
+                    System.Console.WriteLine("Välj filen du vill använda:");
+                    Selector selector = new Selector();
+                    foreach (string item in fileList)
+                    {
+                        selector.Add(item);
+                    }
+                    int output = selector.Run();
+                    selector.Clear();
+                    Console.Clear();
+                    currentFile = fileList[output];
+                    if (Verify())
+                    {
+                        string[] currentFileAsArray = new string[1];
+                        currentFileAsArray[0] = currentFile;
+                        File.WriteAllLines("lastUsed.csv", currentFileAsArray);
+                    }
+                    else
+                    {
+                        System.Console.WriteLine("Något är fel med filen. Återställer.");
+                        Restore();
+                    }
+                    return true;
                 }
-                int output = selector.Run();
-                selector.Clear();
-                Console.Clear();
-                currentFile = fileList[output];
-                if (Verify())
+                else
                 {
-                    string[] currentFileAsArray = new string[1];
-                    currentFileAsArray[0] = currentFile;
-                    File.WriteAllLines("lastUsed.csv", currentFileAsArray);
-                    break;
-                } else {
-                    System.Console.WriteLine("Något är fel med filen. Återställer.");
-                    Restore();
+                    System.Console.WriteLine("Det finns inga filer. Tryck på en knapp för att fortsätta.");
+                    Console.ReadLine();
+                    return false;
                 }
             }
-
         }
         static void Restore()
         {
-            
+
             int tableAmount;
             if (File.ReadAllLines(currentFile).Length < 1)
             {
                 tableAmount = 8;
-            } else 
+            }
+            else
             {
                 tableAmount = File.ReadAllLines(currentFile).Length;
             }
             string fileName = currentFile;
             List<string> bas = new List<string>();
-            File.Create(fileName + ".txt");
+            File.Create(fileName).Close();
             for (int i = 0; i < tableAmount; i++)
             {
-                bas.Add($"{i+1}{defaultInfo}");
+                bas.Add($"{i + 1}{defaultInfo}");
             }
-            File.WriteAllLines($"{fileName}.txt", bas);
+            File.WriteAllLines($"{fileName}", bas);
             System.Console.WriteLine($"Filen har återställts och har nu {tableAmount} bord. Tryck på en knapp för att fortsätta.");
             Console.ReadLine();
         }
@@ -220,7 +244,8 @@ namespace projektuppgift2
                 if (!first)
                 {
                     System.Console.WriteLine("Fel sorts input");
-                } else 
+                }
+                else
                 {
                     first = false;
                 }
@@ -243,16 +268,18 @@ namespace projektuppgift2
                     File.Create(fileName + ".txt").Close();
                     for (int i = 0; i < tableAmount; i++)
                     {
-                        bas.Add($"{i+1}{defaultInfo}");
+                        bas.Add($"{i + 1}{defaultInfo}");
                     }
                     File.WriteAllLines($"{fileName}.txt", bas);
                 }
-            }   else {
+            }
+            else
+            {
                 List<string> bas = new List<string>();
                 File.Create(fileName + ".txt").Close();
                 for (int i = 0; i < tableAmount; i++)
                 {
-                    bas.Add($"{i+1}{defaultInfo}");
+                    bas.Add($"{i + 1}{defaultInfo}");
                 }
                 File.WriteAllLines($"{fileName}.txt", bas);
             }
@@ -260,21 +287,29 @@ namespace projektuppgift2
         static void DeleteFile()
         {
             Console.Clear();
-            System.Console.WriteLine("Välj filen du vill ta bort:");
             string[] fileList = Directory.GetFiles($"{Directory.GetCurrentDirectory()}", "*.txt");
-            Selector selector = new Selector();
-            selector.AddRange(fileList);
-            int output = selector.Run();
-            selector.Clear();
-            Console.Clear();
-            string selectedFile = fileList[output];
-            System.Console.WriteLine($"Är du säker du vill ta bort {selectedFile}?");
-            selector.Add("Ja");
-            selector.Add("Nej");
-            output = selector.Run();
-            selector.Clear();
-            Console.Clear();
-            if(output == 0) File.Delete(selectedFile);
+            if (fileList.Length > 0)
+            {
+                System.Console.WriteLine("Välj filen du vill ta bort:");
+                Selector selector = new Selector();
+                selector.AddRange(fileList);
+                int output = selector.Run();
+                selector.Clear();
+                Console.Clear();
+                string selectedFile = fileList[output];
+                System.Console.WriteLine($"Är du säker du vill ta bort {selectedFile}?");
+                selector.Add("Ja");
+                selector.Add("Nej");
+                output = selector.Run();
+                selector.Clear();
+                Console.Clear();
+                if (output == 0) File.Delete(selectedFile);
+            }
+            else
+            {
+                System.Console.WriteLine("Det finns inga filer. Tryck på en knapp för att fortsätta.");
+                Console.ReadLine();
+            }
         }
     }
 }
@@ -334,7 +369,7 @@ namespace TBA
                 int i;
                 for (i = 0; i <= write.Length - 1; i++)
                 {
-                    Thread.Sleep(20);
+                    Thread.Sleep(2);
                     Console.Write(write.Substring(i, 1));
                 }
 
@@ -344,7 +379,7 @@ namespace TBA
                 int i;
                 for (i = 0; i <= write.Length - 1; i++)
                 {
-                    Thread.Sleep(20);
+                    Thread.Sleep(2);
                     Console.Write(write.Substring(i, 1));
                 }
                 System.Console.WriteLine();
