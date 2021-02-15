@@ -85,7 +85,7 @@ namespace projektuppgift2
                         {
                             string[] raw = line.Split(";");
                             Console.Write($"Bord {raw[0]} - {raw[2]} {raw[3]}.");
-                            if (int.Parse(raw[1]) > 0 && int.Parse(raw[4]) > 0) Console.WriteLine($" Antal gäster: {raw[1]}. Nota: {raw[4]}"); 
+                            if (int.Parse(raw[1]) > 0 && int.Parse(raw[4]) > 0) Console.WriteLine($" Antal gäster: {raw[1]}. Nota: {raw[4]}");
                             else if (int.Parse(raw[1]) > 0) Console.WriteLine($" Antal gäster: {raw[1]}.");
                             else System.Console.WriteLine();
                             total += int.Parse(raw[1]);
@@ -272,11 +272,11 @@ namespace projektuppgift2
         }
         static void CreateFile()
         {
-            int tableAmount = 8;
+            int tableAmount = 0;
             bool first = true;
             System.Console.WriteLine("Skriv hur många bord du vill ha");
             bool integer = false;
-            while (!integer)
+            while (!integer || tableAmount < 1)
             {
                 if (!first)
                 {
