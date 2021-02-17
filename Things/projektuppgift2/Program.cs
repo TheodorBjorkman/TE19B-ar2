@@ -11,7 +11,7 @@ namespace projektuppgift2
         static int tables = 8;
         static string currentFile = "";
         static List<string> content = new List<string>();
-        static string defaultInfo = ";0;Inga;Gäster;0";
+        static string defaultInfo = ";0;Inga;Gäster;0;5";
         static void Main()
         {
             if (File.Exists("lastUsed.csv"))
@@ -73,6 +73,7 @@ namespace projektuppgift2
                 selector.Add("Markera att ett bord är tomt");
                 selector.Add("Gå till filhanteraren");
                 selector.Add("Ändra nota");
+                selector.Add("Ändra max antal gäster");
                 selector.Add("Avsluta");
                 int input = selector.Run();
                 selector.Clear();
@@ -85,9 +86,9 @@ namespace projektuppgift2
                         {
                             string[] raw = line.Split(";");
                             Console.Write($"Bord {raw[0]} - {raw[2]} {raw[3]}.");
-                            if (int.Parse(raw[1]) > 0 && int.Parse(raw[4]) > 0) Console.WriteLine($" Antal gäster: {raw[1]}. Nota: {raw[4]}");
-                            else if (int.Parse(raw[1]) > 0) Console.WriteLine($" Antal gäster: {raw[1]}.");
-                            else System.Console.WriteLine();
+                            if (int.Parse(raw[1]) > 0 && int.Parse(raw[4]) > 0) Console.WriteLine($" Antal gäster: {raw[1]}. Max: {raw[5]}. Nota: {raw[4]}");
+                            else if (int.Parse(raw[1]) > 0) Console.WriteLine($" Antal gäster: {raw[1]}. Max: {raw[5]}.");
+                            else System.Console.WriteLine($" Max antal gäster: {raw[5]}");
                             total += int.Parse(raw[1]);
                         }
                         Console.WriteLine("Totalt antal gäster: " + total);
@@ -110,6 +111,9 @@ namespace projektuppgift2
                         Bill();
                         break;
                     case 5:
+                        EditMax();
+                        break;
+                    case 6:
                         Environment.Exit(0);
                         break;
                 }
@@ -159,17 +163,43 @@ namespace projektuppgift2
             }
             int output = selector.Run();
             selector.Clear();
-            while (true/*!succ && nada > 0*/)
+            string[] contentArray = content[output].Split(";");
+            while (true)
             {
                 System.Console.WriteLine();
                 System.Console.WriteLine("Skriv förnamn efternamn och antal gäster med mellanrum");
                 string[] inputTrue = Console.ReadLine().Split(" ");
                 input = inputTrue;
                 if (inputTrue.Length == 3) succ = int.TryParse(inputTrue[2], out nada);
-                if (succ && nada > 0) break;
+                if (nada > int.Parse(contentArray[5])) System.Console.WriteLine($"Antal gäster måste vara lika eller mindre än max gäster för bortet ({contentArray[5]})");
+                if (succ && nada > 0 && nada <= int.Parse(contentArray[5])) break;
+            }
+            content[output] = $"{(output + 1)};{input[2]};{input[0]};{input[1]};{contentArray[4]};{contentArray[5]}";
+            File.WriteAllLines(currentFile, content);
+            Console.Clear();
+        }
+        static void EditMax()
+        {
+            bool succ = false;
+            int nada = 5;
+            string[] input = new string[3];
+            System.Console.Clear();
+            System.Console.WriteLine("Välj bordet att ändra");
+            Selector selector = new Selector();
+            for (int x = 0; x < tables; x++)
+            {
+                selector.Add($"Bord {x + 1}");
+            }
+            int output = selector.Run();
+            selector.Clear();
+            while (!succ)
+            {
+                System.Console.WriteLine();
+                System.Console.WriteLine("Skriv ny max antal");
+                succ = int.TryParse(Console.ReadLine(), out nada);
             }
             string[] contentArray = content[output].Split(";");
-            content[output] = $"{(output + 1)};{input[2]};{input[0]};{input[1]};{contentArray[4]}";
+            content[output] = $"{contentArray[0]};{contentArray[1]};{contentArray[2]};{contentArray[3]};{contentArray[4]};{nada}";
             File.WriteAllLines(currentFile, content);
             Console.Clear();
         }
@@ -185,7 +215,10 @@ namespace projektuppgift2
             int output = selector.Run();
             selector.Clear();
             System.Console.WriteLine();
-            content[output] = $"{output}{defaultInfo}";
+            string[] a = defaultInfo.Split(";");
+            string[] b = content[output].Split(";");
+            string join = $"{output + 1};{a[1]};{a[2]};{a[3]};{a[4]};{b[5]}";
+            content[output] = join;
             System.Console.WriteLine($"Bord {(output + 1)} har tömts");
             File.WriteAllLines(currentFile, content);
         }
@@ -200,7 +233,7 @@ namespace projektuppgift2
                 string[] items = item.Split(";");
                 for (int i = 0; i < items.Length; i++)
                 {
-                    if (i != 2 && i != 3 && items.Length != 5)
+                    if (i != 2 && i != 3 && items.Length != 6)
                     {
                         if (!int.TryParse(items[i], out empty)) test = false;
                     }
