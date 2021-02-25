@@ -1,4 +1,4 @@
-1;0;Inga;Gäster;0;4
+1;4;a;d;0;4
 2;0;Inga;Gäster;0;5
 3;0;Inga;Gäster;0;5
 4;0;Inga;Gäster;0;5

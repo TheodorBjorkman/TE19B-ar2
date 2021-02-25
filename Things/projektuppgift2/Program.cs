@@ -136,7 +136,7 @@ namespace projektuppgift2
                 System.Console.WriteLine("Skriv ny nota");
                 if (int.TryParse(Console.ReadLine(), out input))
                 {
-                    if (input > 0)
+                    if (input >= 0)
                     {
                         break;
                     }
